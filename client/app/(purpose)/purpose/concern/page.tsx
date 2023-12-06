@@ -26,6 +26,7 @@ export default function ConcernPage() {
       console.error(error);
     }
   };
+  const logoSrc = Logo.src;
 
   useEffect(() => {
     // Add the iframe dynamically when the component mounts
@@ -45,6 +46,8 @@ export default function ConcernPage() {
     };
   }, []); // The empty dependency array ensures this effect runs only once when the component mounts
 
+  // ...
+
   const handlePrintQueue = async () => {
     try {
       const res = await getQueue({
@@ -54,17 +57,19 @@ export default function ConcernPage() {
       if (res.status === 200) {
         console.log('TICKET RESPONSE: ', res.data);
 
-        // Prepare the content for printing with updated styles
+        // Prepare the content for printing with updated styles and logo
         const printContent = `
-          <style>
-            body { margin: 0; padding: 0; text-align: center; }
-            h1 { font-size: 2em; color: red; }
-            div { margin: 10px; }
-          </style>
-          <div>Type Of Transaction: ${res.data['queue_item']['que_type']}</div>
-          <h1>${res.data['queue_item']['priority_number']}</h1>
-          <div>Estimated Waiting Time: ${res.data['estimated_waiting_time']} minutes</div>
-        `;
+        <style>
+          body { margin: 0; padding: 0; text-align: center; }
+          h1 { font-size: 2em; color: red; }
+          div { margin: 10px; }
+          img, svg { max-width: 100%; height: auto; }
+        </style>
+        <svg viewBox="0 0 24 24" width="70px" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M4 14.7519C3.37037 13.8768 3 12.8059 3 11.6493C3 9.20008 4.8 6.9375 7.5 6.5C8.34694 4.48637 10.3514 3 12.6893 3C15.684 3 18.1317 5.32251 18.3 8.25C19.8893 8.94488 21 10.6503 21 12.4969C21 13.5693 20.6254 14.5541 20 15.3275M12.5 12.9995L10.5 21.0008M8.5 11.9995L6.5 20.0008M16.5 12L14.5 20.0013" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+        <div>Type Of Transaction: ${res.data['queue_item']['que_type']}</div>
+        <h1>${res.data['queue_item']['priority_number']}</h1>
+        <div>Estimated Waiting Time: ${res.data['estimated_waiting_time']} minutes</div>
+      `;
 
         // Create a new HTML document for printing
         const printDocument =
@@ -84,6 +89,8 @@ export default function ConcernPage() {
       console.error('Error fetching/printing queue data:', error);
     }
   };
+
+  // ...
 
   return (
     <div className='grid w-full h-full place-items-center'>
